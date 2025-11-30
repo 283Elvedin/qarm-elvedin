@@ -20,13 +20,13 @@ left_col, right_col = st.columns([1, 2])
 # --- PHOTO À GAUCHE (taille réduite) ---
 with left_col:
     # Fichier situé à la racine du projet : qarm2-project/assets/Elvedin.jpg
-    img_path = Path(__file__).parents[2] / "assets" / "Elvedin.jpg"  # ⚠️ extension .jpg
+    img_path = Path(__file__).resolve().parents[2] / "assets" / "Elvedin.jpg"
 
     if img_path.exists():
         st.image(
             str(img_path),
             caption="Elvedin Muminovic",
-            width=260,          # taille de la photo (en pixels)
+            width=260,  # taille de la photo (en pixels)
         )
     else:
         st.error(f"Image not found at {img_path}")
@@ -83,9 +83,5 @@ st.markdown(
 """
 )
 
-st.caption("All results are illustrative only and do not constitute investment advice.") import sys
-import os
-
-# --- pour pouvoir importer layout.py depuis app/ ---
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+st.caption("All results are illustrative only and do not constitute investment advice.")
 
