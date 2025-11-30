@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from layout import set_page_config, render_header
+from app.layout import set_page_config, render_header
 from src.data import load_prices, to_returns, mean_cov
 from src.markowitz import gmv_weights, tangency_weights
 from src.risk_parity import erc_weights

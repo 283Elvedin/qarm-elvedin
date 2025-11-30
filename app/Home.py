@@ -15,7 +15,7 @@ import base64
 from pathlib import Path
 
 import streamlit as st
-from layout import apply_global_style, render_header, set_page_config
+from app.layout import apply_global_style, render_header, set_page_config
 
 
 # -------- Page config + styles globaux --------
