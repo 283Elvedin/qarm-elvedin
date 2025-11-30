@@ -16,8 +16,6 @@ st.markdown(
 If you have any **questions, comments or suggestions** about the platform
 or the investment methodology, you can leave a message below.
 
-This contact form is a **demo** – it does not send real emails, but it shows
-how a client-facing page could look.
 """
 )
 
@@ -51,6 +49,4 @@ if st.button("Submit message"):
             "but your feedback is very much appreciated."
         )
 
-st.caption(
-    "Data entered here is not stored permanently – it only lives in your local session for demonstration purposes."
-)
+
