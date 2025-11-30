@@ -1,3 +1,5 @@
+# app/layout.py
+
 import streamlit as st
 from pathlib import Path
 
@@ -93,37 +95,37 @@ def apply_global_style() -> None:
 def render_header(active_page: str) -> None:
     """
     Barre tout en haut : logo à gauche + navigation horizontale.
-    On utilise st.page_link -> navigation dans le MÊME onglet.
-    `active_page` est juste pour le style léger (gras).
-    """
-    from textwrap import dedent
 
+    IMPORTANT : les chemins passés à st.page_link sont RELATIFS au
+    fichier d'entrée (ici app/Home.py). Donc :
+      - page d'accueil : "Home.py"
+      - autres pages   : "pages/xxx.py"
+    """
     col_left, col_right = st.columns([1.5, 3])
 
     # --- Logo + titre ---
     with col_left:
-        logo_path = Path("assets/logo.png")
+        # chemin du logo à partir de ce fichier layout.py
+        logo_path = Path(__file__).parent / "assets" / "logo.png"
         if logo_path.exists():
             st.image(str(logo_path), width=120)
-        
 
     # --- Menu horizontal avec page_link (même onglet) ---
     with col_right:
         nav_cols = st.columns(5)
 
-        def label(txt: str) -> str:
-            style = "font-weight:600;" if txt == active_page else "font-weight:400;"
-            return f"<span style='{style}'>{txt}</span>"
+        # liste (fichier, label, icône)
+        pages = [
+            ("Home.py",             "Home",        "🏠"),
+            ("pages/Portfolio.py",  "Portfolio",   "📊"),
+            ("pages/Methodology.py","Methodology", "📐"),
+            ("pages/About.py",      "About",       "👤"),
+            ("pages/Contact.py",    "Contact",     "✉️"),
+        ]
 
-        with nav_cols[0]:
-            st.page_link("Home.py", label="Home", icon="🏠")
-        with nav_cols[1]:
-            st.page_link("pages/Portfolio.py", label="Portfolio", icon="📊")
-        with nav_cols[2]:
-            st.page_link("pages/Methodology.py", label="Methodology", icon="📐")
-        with nav_cols[3]:
-            st.page_link("pages/About.py", label="About", icon="👤")
-        with nav_cols[4]:
-            st.page_link("pages/Contact.py", label="Contact", icon="✉️")
+        for i, (page_file, label, icon) in enumerate(pages):
+            with nav_cols[i]:
+                # st.page_link gère tout, pas besoin de HTML ici
+                st.page_link(page_file, label=label, icon=icon)
 
     st.markdown("---")
