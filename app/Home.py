@@ -1,31 +1,35 @@
 # app/Home.py
 
-# --- pour pouvoir importer layout.py depuis app/ ---
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-
-# app/Home.py
-
+import os
+import sys
 import base64
 from pathlib import Path
 
 import streamlit as st
 from app.layout import apply_global_style, render_header, set_page_config
 
+# --- pour pouvoir importer layout.py depuis app/ (utile sur Streamlit Cloud) ---
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 # -------- Page config + styles globaux --------
 set_page_config("Vedoinvest – Home")
 apply_global_style()
 render_header(active_page="Home")
 
-
 # -------- HERO IMAGE (bannière) --------
+# Sur ton repo, l’image est dans : qarm2-project/assets/Home.png
+# (__file__ = app/Home.py → parents[2] = racine du projet)
+project_root = Path(__file__).resolve().parents[2]
+hero_path = project_root / "assets" / "Home.png"   # ⚠️ respecter la MAJUSCULE
 
-# Chemin vers assets/home.png (assets est au niveau du projet, à côté de app/)
-hero_path = Path(__file__).parents[1] / "assets" / "home.png"
-
-# Encodage en base64 pour pouvoir l'afficher dans du HTML
-with open(hero_path, "rb") as f:
-    hero_base64 = base64.b64encode(f.read()).decode("utf-8")
+hero_base64 = None
+if hero_path.exists():
+    # Encodage en base64 pour pouvoir l'afficher dans du HTML
+    with open(hero_path, "rb") as f:
+        hero_base64 = base64.b64encode(f.read()).decode("utf-8")
+else:
+    # Sur Streamlit Cloud, si le fichier n'existe pas on évite le crash
+    st.warning(f"Hero image not found at {hero_path}")
 
 # CSS spécifique pour la bannière
 st.markdown(
@@ -55,18 +59,18 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Bloc HTML de la bannière
-st.markdown(
-    f"""
-    <div class="hero-wrapper">
-        <div class="vedoinvest-card hero-card">
-            <img src="data:image/png;base64,{hero_base64}" alt="Vedoinvest hero">
+# Bloc HTML de la bannière (uniquement si on a bien chargé l’image)
+if hero_base64 is not None:
+    st.markdown(
+        f"""
+        <div class="hero-wrapper">
+            <div class="vedoinvest-card hero-card">
+                <img src="data:image/png;base64,{hero_base64}" alt="Vedoinvest hero">
+            </div>
         </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
+        """,
+        unsafe_allow_html=True,
+    )
 
 # -------- TITLE BLOCK --------
 st.markdown(
@@ -84,7 +88,6 @@ st.markdown(
 )
 
 # ================================
-#      🔥 NEW SECTION ADDED 🔥
 #  --- 3 STAT CARDS LIKE AMBERQUANT ---
 # ================================
 
@@ -128,7 +131,6 @@ with col3:
         unsafe_allow_html=True,
     )
 
-
 # -------- 3 STRATEGY CARDS --------
 col1, col2, col3 = st.columns(3)
 
@@ -170,7 +172,6 @@ with col3:
         """,
         unsafe_allow_html=True,
     )
-
 
 # -------- HOW TO USE SECTION --------
 st.markdown(
