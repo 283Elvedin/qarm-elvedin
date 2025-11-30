@@ -1,5 +1,3 @@
-# app/layout.py
-
 import streamlit as st
 from pathlib import Path
 
@@ -95,18 +93,14 @@ def apply_global_style() -> None:
 def render_header(active_page: str) -> None:
     """
     Barre tout en haut : logo à gauche + navigation horizontale.
-
-    IMPORTANT : les chemins passés à st.page_link sont RELATIFS au
-    fichier d'entrée (ici app/Home.py). Donc :
-      - page d'accueil : "Home.py"
-      - autres pages   : "pages/xxx.py"
+    On utilise st.page_link -> navigation dans le MÊME onglet.
+    `active_page` sert juste à mettre le lien en gras.
     """
     col_left, col_right = st.columns([1.5, 3])
 
     # --- Logo + titre ---
     with col_left:
-        # chemin du logo à partir de ce fichier layout.py
-        logo_path = Path(__file__).parent / "assets" / "logo.png"
+        logo_path = Path("assets/logo.png")
         if logo_path.exists():
             st.image(str(logo_path), width=120)
 
@@ -114,18 +108,28 @@ def render_header(active_page: str) -> None:
     with col_right:
         nav_cols = st.columns(5)
 
-        # liste (fichier, label, icône)
-        pages = [
-            ("Home.py",             "Home",        "🏠"),
-            ("pages/Portfolio.py",  "Portfolio",   "📊"),
-            ("pages/Methodology.py","Methodology", "📐"),
-            ("pages/About.py",      "About",       "👤"),
-            ("pages/Contact.py",    "Contact",     "✉️"),
+        # (label, chemin du fichier, icône)
+        nav_items = [
+            ("Home",        "Home.py",               "🏠"),
+            ("Portfolio",   "pages/Portfolio.py",    "📊"),
+            ("Methodology", "pages/Methodology.py",  "📐"),
+            ("About",       "pages/About.py",        "👤"),
+            ("Contact",     "pages/Contact.py",      "✉️"),
         ]
 
-        for i, (page_file, label, icon) in enumerate(pages):
-            with nav_cols[i]:
-                # st.page_link gère tout, pas besoin de HTML ici
-                st.page_link(page_file, label=label, icon=icon)
+        for col, (label, page_file, icon) in zip(nav_cols, nav_items):
+            with col:
+                # Mettre la page active en gras
+                if label.lower() == active_page.lower():
+                    label_to_show = f"**{label}**"
+                else:
+                    label_to_show = label
+
+                # ⚠️ ICI la correction importante : on passe bien page=...
+                st.page_link(
+                    page=page_file,   # chemin RELATIF à app/Home.py
+                    label=label_to_show,
+                    icon=icon,
+                )
 
     st.markdown("---")
