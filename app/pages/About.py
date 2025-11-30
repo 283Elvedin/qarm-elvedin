@@ -1,5 +1,3 @@
-# app/pages/About.py
-
 import sys
 import os
 from pathlib import Path
@@ -7,8 +5,8 @@ from pathlib import Path
 import streamlit as st
 
 # Pour importer layout.py (qui est dans app/)
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from app.layout import set_page_config, render_header, PROJECT_ROOT
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+from app.layout import set_page_config, render_header
 
 # -------- Config de la page --------
 set_page_config("Vedoinvest – About")
@@ -20,13 +18,13 @@ left_col, right_col = st.columns([1, 2])
 # --- PHOTO À GAUCHE (taille réduite) ---
 with left_col:
     # Fichier situé à la racine du projet : qarm2-project/assets/Elvedin.jpg
-    img_path = PROJECT_ROOT / "assets" / "Elvedin.jpg"
+    img_path = Path(__file__).parents[2] / "assets" / "Elvedin.jpg"
 
     if img_path.exists():
         st.image(
             str(img_path),
             caption="Elvedin Muminovic",
-            width=260,          # taille de la photo (en pixels)
+            width=260,
         )
     else:
         st.error(f"Image not found at {img_path}")
