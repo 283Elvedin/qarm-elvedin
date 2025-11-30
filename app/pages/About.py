@@ -1,4 +1,4 @@
-st.markdown("---")   # app/pages/About.py
+# app/pages/About.py
 
 import sys
 import os
