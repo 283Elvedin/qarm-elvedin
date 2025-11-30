@@ -27,9 +27,6 @@ if hero_path.exists():
     # Encodage en base64 pour pouvoir l'afficher dans du HTML
     with open(hero_path, "rb") as f:
         hero_base64 = base64.b64encode(f.read()).decode("utf-8")
-else:
-    # Sur Streamlit Cloud, si le fichier n'existe pas on évite le crash
-    st.warning(f"Hero image not found at {hero_path}")
 
 # CSS spécifique pour la bannière
 st.markdown(
