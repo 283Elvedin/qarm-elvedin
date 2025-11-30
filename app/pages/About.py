@@ -1,3 +1,5 @@
+st.markdown("---")   # app/pages/About.py
+
 import sys
 import os
 from pathlib import Path
@@ -18,13 +20,13 @@ left_col, right_col = st.columns([1, 2])
 # --- PHOTO À GAUCHE (taille réduite) ---
 with left_col:
     # Fichier situé à la racine du projet : qarm2-project/assets/Elvedin.jpg
-    img_path = Path(__file__).parents[2] / "assets" / "Elvedin.jpg"
+    img_path = Path(__file__).parents[2] / "assets" / "Elvedin.jpg"  # ⚠️ extension .jpg
 
     if img_path.exists():
         st.image(
             str(img_path),
             caption="Elvedin Muminovic",
-            width=260,
+            width=260,          # taille de la photo (en pixels)
         )
     else:
         st.error(f"Image not found at {img_path}")
@@ -81,4 +83,13 @@ st.markdown(
 """
 )
 
-st.caption("All results are illustrative only and do not constitute investment advice.")
+st.caption("All results are illustrative only and do not constitute investment advice.") import sys
+import os
+
+# --- pour pouvoir importer layout.py depuis app/ ---
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
+# app/Home.py
+
+# --- pour pouvoir importer layout.py depuis app/ ---
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
