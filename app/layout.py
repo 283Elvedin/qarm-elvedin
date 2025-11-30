@@ -1,3 +1,4 @@
+# app/layout.py
 import streamlit as st
 from pathlib import Path
 
@@ -5,6 +6,9 @@ from pathlib import Path
 PRIMARY_COLOR = "#111827"      # dark grey / blue
 ACCENT_COLOR = "#F97316"       # orange accent
 BG_LIGHT = "#F9FAFB"           # light background
+
+# Racine du projet (…/qarm2-project/)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def set_page_config(page_title: str) -> None:
@@ -100,7 +104,8 @@ def render_header(active_page: str) -> None:
 
     # --- Logo + titre ---
     with col_left:
-        logo_path = Path("assets/logo.png")
+        # logo: assets/logo.png à la racine du projet
+        logo_path = PROJECT_ROOT / "assets" / "logo.png"
         if logo_path.exists():
             st.image(str(logo_path), width=120)
 
@@ -110,11 +115,11 @@ def render_header(active_page: str) -> None:
 
         # (label, chemin du fichier, icône)
         nav_items = [
-            ("Home",        "Home.py",               "🏠"),
-            ("Portfolio",   "pages/Portfolio.py",    "📊"),
-            ("Methodology", "pages/Methodology.py",  "📐"),
-            ("About",       "pages/About.py",        "👤"),
-            ("Contact",     "pages/Contact.py",      "✉️"),
+            ("Home",        "app/Home.py",             "🏠"),
+            ("Portfolio",   "app/pages/Portfolio.py",  "📊"),
+            ("Methodology", "app/pages/Methodology.py","📐"),
+            ("About",       "app/pages/About.py",      "👤"),
+            ("Contact",     "app/pages/Contact.py",    "✉️"),
         ]
 
         for col, (label, page_file, icon) in zip(nav_cols, nav_items):
@@ -125,11 +130,11 @@ def render_header(active_page: str) -> None:
                 else:
                     label_to_show = label
 
-                # ⚠️ ICI la correction importante : on passe bien page=...
                 st.page_link(
-                    page=page_file,   # chemin RELATIF à app/Home.py
+                    page=page_file,   # chemin RELATIF à la racine du repo
                     label=label_to_show,
                     icon=icon,
                 )
 
     st.markdown("---")
+

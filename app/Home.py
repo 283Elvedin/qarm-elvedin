@@ -1,37 +1,32 @@
+# app/Home.py
+
 import sys
 import os
-
-# --- pour pouvoir importer layout.py depuis app/ ---
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-
-# app/Home.py
-
-# --- pour pouvoir importer layout.py depuis app/ ---
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-
-# app/Home.py
-
 import base64
 from pathlib import Path
 
 import streamlit as st
-from app.layout import apply_global_style, render_header, set_page_config
 
+# pour pouvoir importer layout.py depuis app/
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from app.layout import apply_global_style, render_header, set_page_config, PROJECT_ROOT
 
 # -------- Page config + styles globaux --------
 set_page_config("Vedoinvest – Home")
 apply_global_style()
 render_header(active_page="Home")
 
-
 # -------- HERO IMAGE (bannière) --------
 
-# Chemin vers assets/home.png (assets est au niveau du projet, à côté de app/)
-hero_path = Path(__file__).parents[1] / "assets" / "home.png"
+# Chemin vers assets/Home.png (attention à la majuscule H !)
+hero_path = PROJECT_ROOT / "assets" / "Home.png"
 
-# Encodage en base64 pour pouvoir l'afficher dans du HTML
-with open(hero_path, "rb") as f:
-    hero_base64 = base64.b64encode(f.read()).decode("utf-8")
+hero_base64 = ""
+if hero_path.exists():
+    with open(hero_path, "rb") as f:
+        hero_base64 = base64.b64encode(f.read()).decode("utf-8")
+else:
+    st.error(f"Hero image not found at {hero_path}")
 
 # CSS spécifique pour la bannière
 st.markdown(
@@ -61,18 +56,18 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Bloc HTML de la bannière
-st.markdown(
-    f"""
-    <div class="hero-wrapper">
-        <div class="vedoinvest-card hero-card">
-            <img src="data:image/png;base64,{hero_base64}" alt="Vedoinvest hero">
+if hero_base64:
+    # Bloc HTML de la bannière
+    st.markdown(
+        f"""
+        <div class="hero-wrapper">
+            <div class="vedoinvest-card hero-card">
+                <img src="data:image/png;base64,{hero_base64}" alt="Vedoinvest hero">
+            </div>
         </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
+        """,
+        unsafe_allow_html=True,
+    )
 
 # -------- TITLE BLOCK --------
 st.markdown(
@@ -89,11 +84,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ================================
-#      🔥 NEW SECTION ADDED 🔥
-#  --- 3 STAT CARDS LIKE AMBERQUANT ---
-# ================================
-
+# --- 3 STAT CARDS ---
 st.markdown("<div style='height:0.5rem;'></div>", unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
@@ -134,8 +125,7 @@ with col3:
         unsafe_allow_html=True,
     )
 
-
-# -------- 3 STRATEGY CARDS --------
+# --- 3 STRATEGY CARDS ---
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -177,8 +167,7 @@ with col3:
         unsafe_allow_html=True,
     )
 
-
-# -------- HOW TO USE SECTION --------
+# --- HOW TO USE SECTION ---
 st.markdown(
     """
     <div class="vedoinvest-card" style="margin-top:1.5rem;">
