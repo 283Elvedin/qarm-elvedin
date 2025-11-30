@@ -131,3 +131,5 @@ def render_header(active_page: str) -> None:
                     label=label_to_show,
                     icon=icon,
                 )
+
+    st.markdown("---")
