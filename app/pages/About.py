@@ -8,7 +8,7 @@ import streamlit as st
 
 # Pour importer layout.py (qui est dans app/)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-from layout import apply_global_style, render_header, set_page_config
+from app.layout import apply_global_style, render_header, set_page_config
 
 # -------- Config de la page --------
 set_page_config("Vedoinvest – About")
