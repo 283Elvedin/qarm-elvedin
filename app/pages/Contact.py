@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 import streamlit as st
-from layout import apply_global_style, render_header, set_page_config
+from app.layout import apply_global_style, render_header, set_page_config
 
 set_page_config("Vedoinvest – Contact")
 render_header(active_page="Contact")
