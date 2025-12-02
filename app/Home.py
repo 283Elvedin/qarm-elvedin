@@ -85,7 +85,7 @@ st.markdown(
 )
 
 # ================================
-#  --- 3 STAT CARDS LIKE AMBERQUANT ---
+#  --- 3 STAT CARDS ---
 # ================================
 
 st.markdown("<div style='height:0.5rem;'></div>", unsafe_allow_html=True)
